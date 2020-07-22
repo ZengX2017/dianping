@@ -11,4 +11,11 @@ spring:
     password: zx123456
     url: jdbc:mysql://127.0.0.1:3306/dianping?characterEncoding=utf-8&useUnicode=true&serverTimezone=GMT
     type: com.alibaba.druid.pool.DruidDataSource
+  mvc:
+    static-path-pattern: /static/**
+
+  thymeleaf:
+    prefix: classpath:/templates/
+    suffix: .html
+    encoding: UTF8
 
