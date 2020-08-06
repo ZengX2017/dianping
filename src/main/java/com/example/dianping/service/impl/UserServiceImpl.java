@@ -46,6 +46,15 @@ public class UserServiceImpl implements UserService {
         return getUser(userModel.getId());
     }
 
+    @Override
+    public UserModel login(String phone, String password) throws UnsupportedEncodingException, NoSuchAlgorithmException {
+        UserModel userModel = mapper.selectByPhoneAndPassword(phone, encoudeByMD5(password));
+        if (userModel == null){
+            throw new BussinessException(ResultEnum.LOGIN_FAIL);
+        }
+        return userModel;
+    }
+
     private String encoudeByMD5(String password) throws NoSuchAlgorithmException, UnsupportedEncodingException {
         MessageDigest messageDigest = MessageDigest.getInstance("MD5");
         BASE64Encoder base64Encoder = new BASE64Encoder();

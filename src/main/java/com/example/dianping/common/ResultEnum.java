@@ -19,7 +19,8 @@ public enum ResultEnum {
 
 
     // 用户服务相关的错误类型300开头
-    REGISTER_DUP_FAIL(301, "用户已存在")
+    REGISTER_DUP_FAIL(301, "用户已存在"),
+    LOGIN_FAIL(302, "手机号或者密码错误"),
     ;
 
     private Integer code;

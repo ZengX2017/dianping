@@ -12,7 +12,6 @@ import javax.validation.constraints.NotNull;
 @Data
 public class RegisterForm {
 
-    //TODO: 报错信息没有填充到统一异常处理
     @NotBlank(message = "手机号码不能为空")
     private String phone;
 

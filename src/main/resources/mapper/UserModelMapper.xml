@@ -34,6 +34,12 @@
     from user
     where id = #{id,jdbcType=INTEGER}
   </select>
+  <select id="selectByPhoneAndPassword" resultMap="BaseResultMap">
+    SELECT
+    <include refid="Base_Column_List"/>
+    FROM user WHERE phone=#{phone} and password=#{password}
+  </select>
+
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     <!--
       WARNING - @mbg.generated
