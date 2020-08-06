@@ -26,6 +26,13 @@ public class ResultVOUtil {
         return resultVO;
     }
 
+    public static Result error(ResultEnum resultEnum){
+        Result resultVO = new Result();
+        resultVO.setCode(resultEnum.getCode());
+        resultVO.setMessage(resultEnum.getMessage());
+        return resultVO;
+    }
+
     public static Result error(Integer code, BindingResult bindingResult){
         Result resultVO = new Result();
         resultVO.setCode(code);
