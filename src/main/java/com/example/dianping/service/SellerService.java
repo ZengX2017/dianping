@@ -17,4 +17,6 @@ public interface SellerService {
     List<SellerModel> selectAll();
 
     SellerModel changeStatus(Integer id, Integer disableFlag);
+
+    Integer countAllSeller();
 }
