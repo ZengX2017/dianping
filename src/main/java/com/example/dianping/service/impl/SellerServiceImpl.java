@@ -1,11 +1,16 @@
 package com.example.dianping.service.impl;
 
+import com.example.dianping.common.ResultEnum;
 import com.example.dianping.dao.SellerModelMapper;
+import com.example.dianping.exception.BussinessException;
 import com.example.dianping.model.SellerModel;
 import com.example.dianping.service.SellerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import java.math.BigDecimal;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -19,13 +24,19 @@ public class SellerServiceImpl implements SellerService {
     private SellerModelMapper sellerModelMapper;
 
     @Override
+    @Transactional
     public SellerModel create(SellerModel sellerModel) {
-        return null;
+        sellerModel.setCreatedAt(new Date());
+        sellerModel.setUpdatedAt(new Date());
+        sellerModel.setRemarkScore(new BigDecimal(0));
+        sellerModel.setDisabledFlag(0);
+        sellerModelMapper.insertSelective(sellerModel);
+        return get(sellerModel.getId());
     }
 
     @Override
     public SellerModel get(Integer id) {
-        return null;
+        return sellerModelMapper.selectByPrimaryKey(id);
     }
 
     @Override
@@ -35,6 +46,12 @@ public class SellerServiceImpl implements SellerService {
 
     @Override
     public SellerModel changeStatus(Integer id, Integer disableFlag) {
-        return null;
+        SellerModel sellerModel = get(id);
+        if (sellerModel == null){
+            throw new BussinessException(ResultEnum.PARAMETER_VALIDATION_ERROR);
+        }
+        sellerModel.setDisabledFlag(disableFlag);
+        sellerModelMapper.updateByPrimaryKeySelective(sellerModel);
+        return sellerModel;
     }
 }

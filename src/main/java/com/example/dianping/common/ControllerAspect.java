@@ -27,10 +27,10 @@ public class ControllerAspect {
     @Autowired
     private HttpServletResponse response;
 
-    // TODO 了解return null和joinPoint.proceed()的区别
+    // TODO 了解return null和joinPoint.proceed()的区别, PostMapping那段可能不要
     // 第一个*代表返回值，第二个*代表方法，第三个*代表所有参数的方法
     // &&后面控制admin中有@RequsetMapping（已用GetMapping和PostMapping分开表述）的方法
-    @Around("execution(* com.example.dianping.controller.admin.*.*(..)) && @annotation(org.springframework.web.bind.annotation.GetMapping)")
+    @Around("execution(* com.example.dianping.controller.admin.*.*(..)) && (@annotation(org.springframework.web.bind.annotation.GetMapping) || @annotation(org.springframework.web.bind.annotation.PostMapping)) ")
     public Object adminControllerBeforeValidation(ProceedingJoinPoint joinPoint) throws Throwable {
         Method method = ((MethodSignature) joinPoint.getSignature()).getMethod();
         AdminPermission adminPermission = method.getAnnotation(AdminPermission.class);
