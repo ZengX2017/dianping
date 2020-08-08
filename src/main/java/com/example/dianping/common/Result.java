@@ -15,14 +15,4 @@ public class Result<T> {
 
     private String message;
 
-    public static Result getResult(Object object){
-        return getResult(object, "success");
-    }
-
-    public static Result getResult(Object object, String message){
-        Result result = new Result();
-        result.setMessage(message);
-        result.setData(object);
-        return result;
-    }
 }
