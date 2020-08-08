@@ -261,9 +261,39 @@
     </select>
     <select id="recommend" resultMap="BaseResultMap">
         select
-        <include refid="Base_Column_List" />
-        ,ceil(1 + 1000*(2 * 6378.137* ASIN(SQRT(POW(SIN(PI() * (#{latitude} - latitude) / 360), 2) + COS(PI() * #{latitude} / 180)
+        <include refid="Base_Column_List"/>
+        ,ceil(1 + 1000*(2 * 6378.137* ASIN(SQRT(POW(SIN(PI() * (#{latitude} - latitude) / 360), 2) + COS(PI() *
+        #{latitude} / 180)
         * COS(latitude* PI() / 180) * POW(SIN(PI() * (#{longitude} - longitude) / 360), 2))))) AS distance
-        from shop order by (0.95*1/log10(distance)+ 0.05*remark_score/5)  DESC
+        from shop order by (0.95*1/log10(distance)+ 0.05*remark_score/5) DESC
+    </select>
+    <select id="search" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        ,ceil(1 + 1000*(2 * 6378.137* ASIN(SQRT(POW(SIN(PI() * (#{latitude} - latitude) / 360), 2) + COS(PI() *
+        #{latitude} / 180)
+        * COS(latitude* PI() / 180) * POW(SIN(PI() * (#{longitude} - longitude) / 360), 2))))) AS distance
+        from shop where name like CONCAT('%', #{keyword} ,'%')
+        <if test="categoryId != null">
+            and categord_id = #{categoryId}
+        </if>
+        <if test="tags != null">
+            and tags = #{tags}
+        </if>
+        <if test="orderBy == null">
+            order by (0.95*1/log10(distance)+ 0.05*remark_score/5) DESC
+        </if>
+        <if test="orderBy == 1">
+            order by price_per_man ASC, id ASC
+        </if>
+    </select>
+    <select id="searchGroupByTags" resultType="java.util.Map">
+        SELECT tags, COUNT(1) as num
+        FROM shop
+        WHERE name LIKE CONCAT('%', #{keyword}, '%')
+        <if test="tags != null">
+            and tags = #{tags}
+        </if>
+        group by tags
     </select>
 </mapper>
