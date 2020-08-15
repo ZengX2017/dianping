@@ -13,6 +13,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.List;
@@ -53,12 +54,14 @@ public class ShopController {
                          @RequestParam("keyword") String keyword,
                          @RequestParam(name = "orderBy",required = false) Integer orderBy,
                          @RequestParam(name = "categoryId",required = false) Integer categoryId,
-                         @RequestParam(name = "tags",required = false) String tags){
+                         @RequestParam(name = "tags",required = false) String tags) throws IOException {
         if (longitude == null || latitude == null || StringUtils.isEmpty(keyword)){
             throw new BussinessException(ResultEnum.PARAMETER_VALIDATION_ERROR.getCode(), "经度或者维度或者关键字不能为空");
         }
 
-        List<ShopModel> shopModelList = shopService.search(longitude, latitude, keyword, orderBy, categoryId, tags);
+        List<ShopModel> shopModelList = (List<ShopModel>) shopService.searchES(longitude, latitude, keyword, orderBy, categoryId, tags).get("shop");
+//        V1.0弃用
+//        List<ShopModel> shopModelList = shopService.search(longitude, latitude, keyword, orderBy, categoryId, tags);
         List<CategoryModel> categoryModelList = categoryService.selectAll();
         List<Map<String, Object>> tagsAggregation = shopService.searchGroupByTags(keyword, categoryId, tags);
         Map<String, Object> resMap = new HashMap<>();
