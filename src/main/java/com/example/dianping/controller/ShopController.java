@@ -59,11 +59,14 @@ public class ShopController {
             throw new BussinessException(ResultEnum.PARAMETER_VALIDATION_ERROR.getCode(), "经度或者维度或者关键字不能为空");
         }
 
-        List<ShopModel> shopModelList = (List<ShopModel>) shopService.searchES(longitude, latitude, keyword, orderBy, categoryId, tags).get("shop");
+        Map<String, Object> result = shopService.searchES(longitude, latitude, keyword, orderBy, categoryId, tags);
+        List<ShopModel> shopModelList = (List<ShopModel>) result.get("shop");
+
 //        V1.0弃用
 //        List<ShopModel> shopModelList = shopService.search(longitude, latitude, keyword, orderBy, categoryId, tags);
         List<CategoryModel> categoryModelList = categoryService.selectAll();
-        List<Map<String, Object>> tagsAggregation = shopService.searchGroupByTags(keyword, categoryId, tags);
+//        List<Map<String, Object>> tagsAggregation = shopService.searchGroupByTags(keyword, categoryId, tags);
+        List<Map<String, Object>> tagsAggregation = (List<Map<String, Object>>) result.get("tags");
         Map<String, Object> resMap = new HashMap<>();
         resMap.put("shop", shopModelList);
         resMap.put("category", categoryModelList);
